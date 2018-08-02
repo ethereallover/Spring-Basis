@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	
+	<!-- 配置对象，相当于new对象          ==========================IOC(控制反转)学习==========================
+		* class 设置类的全限定名称
+		* id 唯一标示符，在学习阶段建议加Id后缀
+	 -->
+	<bean id="userServiceId" class="com.ethreal.learning.ioc.UserService"></bean>
+	<!--  ==========================IOC学习==========================  -->
+	
+	<!-- ==========================DI(依赖注入)学习==========================
+		依赖注入：spring提供 <property> 用于配置setter方法进行操作
+		格式：<property name="" ref="">
+				name 当前操作对象属性名（及通过setter方法获得）
+				ref 需要设置对象的bean 名称引用。
+	-->
+	<bean id="bookDaoId" class="com.ethreal.learning.di.dao.impl.BookDaoImpl"></bean>
+	<!-- 创建Service -->
+	<bean id="bookServiceId" class="com.ethreal.learning.di.service.impl.BookServiceImpl" >
+		<property name="bookDao" ref="bookDaoId"></property>
+	</bean>
+	
+	
+	<!-- ==========================DI学习========================== -->
+	
+</beans>
