@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans.xsd
+       					   http://www.springframework.org/schema/aop
+       					   http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- 1 目标类 -->
+	<bean id="UserServiceID" class="com.ethereal.learning.aop.jdkproxy.impl.UserServiceImpl"></bean>
+	
+	<!-- 2 切面类（通知） -->
+	<!-- <bean id="MyAspectID" class="com.ethereal.learning.aop.jdkproxy.AspectAOP"></bean> -->
+	
+	<bean id="MyAspectID" class="com.ethereal.learning.aop.jdkproxy.MyAspectJ"></bean>
+	
+	<!-- 3 spring aop 编程 
+		* aop编程 <aop:config>
+		* pointcut 切入点：确定目标类上那些方法需要增强
+			<aop:pointcut>
+				expression 切入点表达式，采用aspectJ的切入点表示
+					execution(* com.itheima.c_aop.UserServiceImpl.addUser())  指定方法
+					execution(* com.itheima.c_aop.UserServiceImpl.*())		任意方法
+				id : 名称，提供给别人使用的。
+		* advisor 这是一个特殊切面，一个通知 和 一个切入点 结合
+			advice-ref 通知引用
+			pointcut-ref 切入点引用
+		* proxy-target-class="true" 表示强制使用cglib
+	-->
+	
+	<!--Spring AOP引用配置 --> 
+		<!-- <aop:config proxy-target-class="true">
+			<aop:pointcut expression="execution(* com.ethereal.learning.aop.jdkproxy.impl.UserServiceImpl.*(..))" id="MyPointCutID"/>
+			<aop:advisor advice-ref="MyAspectID" pointcut-ref="MyPointCutID"/>
+		</aop:config> -->
+	<!--Spring AOP引用配置 -->
+	 
+	 <!-- AspectJ引用配置 -->
+		<aop:config proxy-target-class="true">
+			<aop:aspect ref="MyAspectID">
+				<aop:pointcut expression="execution(* com.ethereal.learning.aop.jdkproxy.impl.UserServiceImpl.*(..))" id="MyPointCutID"/>
+			
+				<aop:before method="methodBefore" pointcut-ref="MyPointCutID"/>
+			
+				<aop:after-returning method="methodAfter" pointcut-ref="MyPointCutID" returning="result" arg-names="joinPoint,result"/>
+
+				<aop:around method="methodAround" pointcut-ref="MyPointCutID"/>
+			
+				<aop:after-throwing method="methodException" pointcut-ref="MyPointCutID" throwing="throwable" arg-names="joinPoint,throwable"/>
+			
+				<aop:after method="methodFinal" pointcut-ref="MyPointCutID" />
+			</aop:aspect>
+		</aop:config>
+	<!-- AspectJ引用配置 -->
+	
+</beans>
